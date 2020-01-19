@@ -4,7 +4,7 @@
 Summary:          Secure PIN handling using NSS crypto
 Name:             svrcore
 Version:          4.0.4
-Release:          11%{?dist}
+Release:          9%{?dist}
 License:          MPLv1.1 or GPLv2+ or LGPLv2+
 URL:              http://www.mozilla.org/projects/security/pki/
 Group:            Development/Libraries
@@ -74,12 +74,6 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libsvrcore.la
 %{_includedir}/svrcore.h
 
 %changelog
-* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 4.0.4-11
-- Mass rebuild 2014-01-24
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 4.0.4-10
-- Mass rebuild 2013-12-27
-
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0.4-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
