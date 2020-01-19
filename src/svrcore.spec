@@ -3,10 +3,10 @@
 
 Summary:          Secure PIN handling using NSS crypto
 Name:             svrcore
-Version:          4.0.4
+Version:          __VERSION__
 Release:          1%{?dist}
-License:          MPL/GPL/LGPL
-URL:              http://www.mozilla.org/projects/security/pki/
+License:          MPL2.0
+URL:              https://pagure.io/svrcore
 Group:            Development/Libraries
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:         nspr >= %{nspr_version}
@@ -14,8 +14,13 @@ Requires:         nss >= %{nss_version}
 BuildRequires:    nspr-devel >= %{nspr_version}
 BuildRequires:    nss-devel >= %{nss_version}
 BuildRequires:    pkgconfig
+BuildRequires:    pkgconfig(systemd)
+# Needed to support regeneration of the autotool artifacts.
+BuildRequires:    autoconf
+BuildRequires:    automake
+BuildRequires:    libtool
 
-Source0:          ftp://ftp.mozilla.org/pub/mozilla.org/directory/svrcore/releases/%{version}/src/%{name}-%{version}.tar.bz2
+Source0:            http://www.port389.org/binaries/%{name}-%{version}.tar.bz2
 
 %description
 svrcore provides applications with several ways to handle secure PIN storage
@@ -46,7 +51,8 @@ develop programs which will use the svrcore library.
 
 %build
 
-%configure
+autoreconf -fiv
+%configure --with-systemd
 make
 
 %install
@@ -74,6 +80,23 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libsvrcore.la
 %{_includedir}/svrcore.h
 
 %changelog
+* Fri Mar 10 2017 Mark Reynolds <mreynolds@redhat.com> - 4.1.3
+- Bump version to 4.1.3
+- Ticket 18 - Remove configure outputs
+- Ticket 17 - update stdc to c99 to match other projects
+- Ticket 16 - with systemd should unset have systemd if pkgconfig not found
+- Ticket 14 - svrcore does not detect tty
+
+* Thu Apr 21 2016 Noriko Hosoi <nhosoi@redhat.com> - 4.1.2
+- Code quality improvements
+
+* Thu Apr 14 2016 William Brown <wibrown@redhat.com> - 4.1.1
+- Code quality and stability improvements
+- Improvements to rpm tooling and features
+
+* Fri Apr 8 2016 William Brown <wibrown@redhat.com> - 4.1.0
+- Added systemd ask password support
+
 * Tue Mar 13 2007 Rich Megginson <richm@stanfordalumni.org> - 4.0.4-1
 - Removed some autoconf generated files which were GPL only - all
 - code needs to be tri-licensed

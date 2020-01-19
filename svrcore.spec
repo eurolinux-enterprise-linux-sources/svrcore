@@ -3,10 +3,10 @@
 
 Summary:          Secure PIN handling using NSS crypto
 Name:             svrcore
-Version:          4.0.4
-Release:          9%{?dist}
-License:          MPLv1.1 or GPLv2+ or LGPLv2+
-URL:              http://www.mozilla.org/projects/security/pki/
+Version:          4.1.3
+Release:          2%{?dist}
+License:          MPL2.0
+URL:              https://pagure.io/svrcore
 Group:            Development/Libraries
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:         nspr >= %{nspr_version}
@@ -14,8 +14,13 @@ Requires:         nss >= %{nss_version}
 BuildRequires:    nspr-devel >= %{nspr_version}
 BuildRequires:    nss-devel >= %{nss_version}
 BuildRequires:    pkgconfig
+BuildRequires:    pkgconfig(systemd)
+# Needed to support regeneration of the autotool artifacts.
+BuildRequires:    autoconf
+BuildRequires:    automake
+BuildRequires:    libtool
 
-Source0:          ftp://ftp.mozilla.org/pub/mozilla.org/directory/svrcore/releases/%{version}/src/%{name}-%{version}.tar.bz2
+Source0:          http://www.port389.org/binaries/%{name}-%{version}.tar.bz2
 
 %description
 svrcore provides applications with several ways to handle secure PIN storage
@@ -46,7 +51,9 @@ develop programs which will use the svrcore library.
 
 %build
 
-%configure
+autoreconf -fiv
+
+%configure --with-systemd
 make
 
 %install
@@ -74,6 +81,33 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libsvrcore.la
 %{_includedir}/svrcore.h
 
 %changelog
+* Fri Mar 17 2017 Mark Reynolds <mreynolds@redhat.com> - 4.1.3-2
+- Bump version to 4.1.3-2
+- Fix problem with spec file and systemd
+
+* Fri Mar 10 2017 Mark Reynolds <mreynolds@redhat.com> - 4.1.3-1
+- release 4.1.3.1
+- Resolves: Bug 1392065 - Rebase svrcore to 4.1.3 in RHEL-7.4
+
+* Thu Apr 21 2016 Noriko Hosoi <nhosoi@redhat.com> - 4.1.2-1
+- release 4.1.2-1
+- Resolves: Bug 1329002 - SVRCORE - Fixing coverity issues.
+
+* Thu Apr 21 2016 Noriko Hosoi <nhosoi@redhat.com> - 4.1.1-1
+- release 4.1.1-1
+- Resolves: Bug 1329002 - SVRCORE - Fixing coverity issues.
+
+* Fri Apr  8 2016 Noriko Hosoi <nhosoi@redhat.com> - 4.1.0-1
+- release 4.1.0-1
+- Resolves: Bug 1324983 - Rebase: svrcore
+            Added systemd ask password support (DS 48450)
+
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 4.0.4-11
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 4.0.4-10
+- Mass rebuild 2013-12-27
+
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0.4-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 

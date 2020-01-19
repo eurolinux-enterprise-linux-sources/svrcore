@@ -1,3 +1,9 @@
+ASAN_DEFINES = @asan_defs@
+DEBUG_DEFINES = @debug_defs@
+
+AM_CPPFLAGS = $(ASAN_DEFINES) $(DEBUG_DEFINES)
+AM_LDFLAGS = $(ASAN_DEFINES) $(DEBUG_DEFINES)
+
 EXTRA_DIST = key.ico \
 	     logo.ico \
 	     manifest.mn \
@@ -15,7 +21,9 @@ libsvrcore_la_SOURCES =	alt.c \
 			pin.c \
 			pk11.c \
 			std.c \
+			systemd-ask-pass.c \
+			std-systemd.c \
 			user.c
 
 libsvrcore_la_LDFLAGS = -version-info 0:0:0 @NSS_LIBS@ @NSPR_LIBS@
-libsvrcore_la_CFLAGS = @NSS_CFLAGS@ @NSPR_CFLAGS@
+libsvrcore_la_CFLAGS = @NSS_CFLAGS@ @NSPR_CFLAGS@ @SYSTEMD_CFLAGS@
